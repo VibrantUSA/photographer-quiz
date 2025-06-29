@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Photographer Training Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fffbf4;
+            color: #312302;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background-image: url('logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 2px solid #D4c070;
+        }
+        
+        h1 {
+            color: #312302;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #553f0c;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        .quiz-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(49, 35, 2, 0.1);
+            border: 1px solid rgba(212, 192, 112, 0.2);
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            background: #D4c070;
+            color: #312302;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        
+        .question-text {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #312302;
+        }
+        
+        .question-type {
+            font-size: 0.9rem;
+            color: #553f0c;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            margin: 20px 0;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #D4c070;
+            background: rgba(212, 192, 112, 0.1);
+        }
+        
+        .option.selected {
+            border-color: #D4c070;
+            background: rgba(212, 192, 112, 0.2);
+        }
+        
+        .option input {
+            margin-right: 12px;
+            scale: 1.2;
+            accent-color: #D4c070;
+        }
+        
+        .short-answer {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .short-answer:focus {
+            outline: none;
+            border-color: #D4c070;
+        }
+        
+        /* Drag and Drop Styles */
+        .drag-container {
+            margin: 20px 0;
+        }
+        
+        .drag-instructions {
+            background: #e8f4fd;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+        
+        .drag-item {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: grab;
+            transition: all 0.3s ease;
+            user-select: none;
+            position: relative;
+        }
+        
+        .drag-item:hover {
+            border-color: #D4c070;
+            box-shadow: 0 2px 8px rgba(212, 192, 112, 0.3);
+        }
+        
+        .drag-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: rotate(5deg);
+        }
+        
+        .drag-item.drag-over {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            border-style: dashed;
+        }
+        
+        .drag-item-number {
+            background: #6b7280;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            position: absolute;
+            top: -8px;
+            left: -8px;
+        }
+        
+        .explanation {
+            background: #fef9e7;
+            border-left: 4px solid #D4c070;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .explanation-title {
+            font-weight: 600;
+            color: #312302;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .explanation-content {
+            color: #553f0c;
+            line-height: 1.6;
+        }
+        
+        .resource-links {
+            background: #f8f9fa;
+            border: 2px solid #D4c070;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .resource-links h5 {
+            color: #312302;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .resource-links a {
+            display: inline-block;
+            background: #D4c070;
+            color: #312302;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin: 4px 8px 4px 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .resource-links a:hover {
+            background: #c2a85e;
+        }
+        
+        .btn {
+            background: #D4c070;
+            color: #553f0c;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #c2a85e;
+            transform: translateY(-2px);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .navigation span {
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+            color: #553f0c;
+        }
+        
+        .progress-bar {
+            background: #f0f0f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #D4c070, #c2a85e);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .results-page {
+            text-align: center;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .pass { color: #22c55e; }
+        .fail { color: #ef4444; }
+        
+        .user-info {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #312302;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #D4c070;
+        }
+        
+        .hidden { display: none; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            h1 { font-size: 2rem; }
+            .quiz-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <h1>Sales Photographer Training Quiz</h1>
+            <p class="subtitle">Test your knowledge of Vibrant USA policies and procedures</p>
+        </div>
+
+        <!-- User Information Form -->
+        <div id="user-info-form" class="user-info">
+            <h2 style="margin-bottom: 20px; color: #312302;">Before you begin...</h2>
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" required>
+            </div>
+            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            
+            <div id="question-container"></div>
+            
+            <div class="navigation">
+                <span id="question-counter">Question 1 of 21</span>
+                <button class="btn" id="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div id="results-container" class="hidden">
+            <div class="results-page">
+                <h2>Quiz Complete!</h2>
+                <div class="score-display" id="score-display"></div>
+                <div id="result-message"></div>
+                <button class="btn" id="retake-btn" onclick="retakeQuiz()" style="display: none;">Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // UPDATED QUESTIONS
+            {
+                question: "How should you approach guests who are busy or deep in conversation?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "If guests are actively engaged in conversation, do not interrupt. If they seem relaxed, approach normally and ask: \"Are you ready for a photo?\" If they say no, respond politely: \"No problem — one photo is included with your meal, you can keep it!\" If they still decline, thank them warmly and move to another table at a respectful distance.",
+                resourceLinks: [
+                    { text: "Code of Conduct - Page 4", url: "https://drive.google.com/file/d/1jn0PEvtgzBRlgVE7Eto3ma1oqc2Ad9FN/view" }
+                ]
+            },
+            {
+                question: "What should you say when greeting a table?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Hi everyone, are you ready for a picture?",
+                resourceLinks: [
+                    { text: "Code of Conduct - Page 4", url: "https://drive.google.com/file/d/1jn0PEvtgzBRlgVE7Eto3ma1oqc2Ad9FN/view" }
+                ]
+            },
+            {
+                question: "When editing oily skin, which tools should you prioritize?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "Use the brightness and contrast options to soften the image", correct: false },
+                    { text: "Use the blemish tool", correct: true },
+                    { text: "Ask to clean their face and retake the picture", correct: false },
+                    { text: "Leave it how it is", correct: false }
+                ],
+                multiple: false,
+                explanation: "Use the blemish tool to naturally improve photo quality without over-editing.",
+                resourceLinks: [
+                    { text: "Sales Guide - Page 3", url: "https://drive.google.com/file/d/181i_5dB5sAwHPL1ou98w5vt28Exlr-3Q/view?usp=drive_link" }
+                ]
+            },
+            {
+                question: "How do you load paper into the printer correctly?",
+                type: "Drag and Drop",
+                dragItems: [
+                    { text: "Open the printer and remove old ribbon and paper", correct: 1 },
+                    { text: "Press the blue toggle to open the tray fully", correct: 2 },
+                    { text: "Replace the ribbon and load the new paper roll with holders attached", correct: 3 },
+                    { text: "Remove the sticker, feed the paper, and listen for the beep", correct: 4 },
+                    { text: "Close everything, push the printer back, and wait for test prints to finish", correct: 5 }
+                ],
+                explanation: "The correct order is as follows: Open the printer and remove old ribbon and paper → Press the blue toggle to open the tray fully → Replace the ribbon and load the new paper roll with holders attached → Remove the sticker, feed the paper, and listen for the beep → Close everything, push the printer back, and wait for test prints to finish",
+                resourceLinks: [
+                    { text: "Darkroom, Printer, Templates Guide - Page 3", url: "https://drive.google.com/file/d/1XyY5ISeRpoPTALH_9zXcSkQrljkf2OqW/view" },
+                    { text: "Video Tutorial", url: "https://www.youtube.com/watch?v=XCmo0NuW0Sc" }
+                ]
+            },
+            {
+                question: "If the paper is jammed and cannot be pulled out, what should you do?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Roll the paper back from the ribbon area, trim the jammed end with scissors or a box cutter, and reinsert the paper. Be gentle — do not force it.",
+                resourceLinks: [
+                    { text: "Darkroom, Printer, Templates Guide - Page 4", url: "https://drive.google.com/file/d/1XyY5ISeRpoPTALH_9zXcSkQrljkf2OqW/view" },
+                    { text: "Video Tutorial", url: "https://www.youtube.com/watch?v=c6BI4AwhsKQ" }
+                ]
+            },
+            {
+                question: "The printer stopped working after printing. What steps should you take?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Check if the paper and ribbon are running low. Replace both together — they are used as a set.",
+                resourceLinks: [
+                    { text: "Software Guide - Page 7", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "If the printer shows \"No printer detected\" in Darkroom, what is the correct troubleshooting sequence?",
+                type: "Drag and Drop",
+                dragItems: [
+                    { text: "In Darkroom, go to Setup → Printer Options and check if the \"Detected\" column shows 1", correct: 1 },
+                    { text: "Reconnect the printer via the Darkroom app", correct: 2 },
+                    { text: "Check cables — disconnect and reconnect both ends", correct: 3 },
+                    { text: "Restart the laptop", correct: 4 },
+                    { text: "In Darkroom, check Setup → Printer Options again to verify the \"Detected\" column shows 1", correct: 5 }
+                ],
+                explanation: "If Darkroom can't detect the printer, it's usually a software or connection issue — not a hardware problem. Start by checking Setup → Printer Options in Darkroom. The \"Detected\" column should show 1. If it shows 0, remove and reconnect the printer in Darkroom. Next, unplug and replug all cables (USB, power, printer head). Restart the laptop to reset drivers. Finally, verify detection by checking if the column updates to 1 in Darkroom again.",
+                resourceLinks: [
+                    { text: "Software Guide - Page 6", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "How should you process a card payment after guests select their photos?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Enter the total into the Square app. Show the guest the screen and say: \"This is how much it's going to be with tax.\" Note: Tax applies to card payments only, not to cash.",
+                resourceLinks: [
+                    { text: "Internal Training Notes", url: "" }
+                ]
+            },
+            {
+                question: "If a guest pays with cash, how should the sale be recorded?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Record the sale manually in the designated sales tracking table.",
+                resourceLinks: [
+                    { text: "Internal Training Notes", url: "" }
+                ]
+            },
+            {
+                question: "Arrange the steps in the correct order to properly close your station at the end of your shift:",
+                type: "Drag and Drop",
+                dragItems: [
+                    { text: "Finish all payments", correct: 1 },
+                    { text: "Clean and organize all equipment (camera, frames, printer, SD card, etc.) Turn off the camera, power strip, and flash.", correct: 2 },
+                    { text: "Lock both station drawers and place lock in lockbox", correct: 3 },
+                    { text: "Take final timestamp photos", correct: 4 },
+                    { text: "Submit daily report", correct: 5 }
+                ],
+                explanation: "Correct Closing Procedure: 1. Finish all payments → 2. Clean and organize all equipment (camera, frames, printer, SD card, etc.) Turn off the camera, power strip, and flash. → 3. Lock both station drawers and place lock in lockbox → 4. Take final timestamp photos → 5. Submit daily report",
+                resourceLinks: [
+                    { text: "Open/Close Shift Guide - Page 2", url: "https://drive.google.com/file/d/1uPn_BmPFwHsN3lLSq66h9cUckKF8ak5c/view" }
+                ]
+            },
+            {
+                question: "What confirms the transaction is complete in Square?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "When the card is inserted", correct: false },
+                    { text: "When the photos are handed to the guest", correct: false },
+                    { text: "When the \"Thank You!\" screen appears and the receipt option is selected", correct: true },
+                    { text: "When the receipt is printed", correct: false }
+                ],
+                multiple: false,
+                explanation: "The \"Thank You!\" screen with receipt option confirms successful payment processing.",
+                resourceLinks: [
+                    { text: "Internal Training Notes", url: "" }
+                ]
+            },
+            // CONTINUE WITH REMAINING ORIGINAL QUESTIONS
+            {
+                question: "You're printing but nothing comes out. You've checked the cables. What do you do next?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "Reboot the printer and reseat the ribbon", correct: true },
+                    { text: "Remove and re-add the printer", correct: false },
+                    { text: "Switch computers", correct: false },
+                    { text: "Skip printing until tomorrow", correct: false }
+                ],
+                multiple: false,
+                explanation: "First, turn off and reset the printer, and ensure the ribbon and paper are loaded correctly. If that fails, troubleshoot deeper by re-adding the printer.",
+                resourceLinks: [
+                    { text: "Software Guide - Page 2", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "Which of the following are effective posing techniques for group photos?",
+                type: "Multiple Select",
+                options: [
+                    { text: "Have everyone crowd tightly with no spacing", correct: false },
+                    { text: "Hugging, if the group energy allows", correct: true },
+                    { text: "\"Cheers\" pose — guests holding up their drinks (also works well with older guests)", correct: true },
+                    { text: "Peace sign", correct: true },
+                    { text: "Allow guests to preview the photo mid-shoot to adjust lighting", correct: false }
+                ],
+                multiple: true,
+                explanation: "Hugging adds warmth when the group is comfortable. Cheers creates a celebratory, natural feel across age groups. Peace sign is a timeless and relaxed gesture.",
+                resourceLinks: [
+                    { text: "Poses Guide - Page 1", url: "https://drive.google.com/file/d/1uPn_BmPFwHsN3lLSq66h9cUckKF8ak5c/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "Which of the following actions can negatively affect guest comfort or trust?",
+                type: "Multiple Select",
+                options: [
+                    { text: "Holding camera up without greeting", correct: true },
+                    { text: "Interrupting their order", correct: true },
+                    { text: "Approaching while they're eating", correct: true },
+                    { text: "Hovering silently near their table", correct: true },
+                    { text: "Gently saying, \"Hi there, may I?\"", correct: false }
+                ],
+                multiple: true,
+                explanation: "Comfort starts with presence and timing. Never hover or point a camera before greeting. Respect the guest's moment and approach appropriately.",
+                resourceLinks: [
+                    { text: "Code of Conduct - Page 4", url: "https://drive.google.com/file/d/1jn0PEvtgzBRlgVE7Eto3ma1oqc2Ad9FN/view" }
+                ]
+            },
+            {
+                question: "What's one effective way to help the restaurant get more reviews from guests who clearly enjoyed the photos?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "Offer the digital copy before they decide whether to buy — to build excitement", correct: false },
+                    { text: "If they buy a photo or politely decline but clearly liked it, offer the digital copy in exchange for a quick review", correct: true },
+                    { text: "Ask every table for a review as part of your opening pitch", correct: false },
+                    { text: "Only suggest reviews to large groups or tourists", correct: false }
+                ],
+                multiple: false,
+                explanation: "The best time to offer a review opportunity is after a successful or positive interaction — not before. If they buy, or politely pass but show appreciation, you can say: \"Hey, since you really liked it — if you'd be open to leaving us a quick review, I'd be happy to send you the digital copy too.\" No pressure. Just a thank-you gesture.",
+                resourceLinks: [
+                    { text: "Sales Guide - Pages 6-7", url: "https://drive.google.com/file/d/181i_5dB5sAwHPL1ou98w5vt28Exlr-3Q/view?usp=drive_link" }
+                ]
+            },
+            // REMAINING CSV QUESTIONS (12-23)
+            {
+                question: "It's dark. Do you adjust ISO, flash, and shutter speed up or down? List each setting and the direction you'd change it.",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "ISO: UP (increase to capture more light), Flash: UP (increase power for better illumination), Shutter Speed: DOWN (slower speed to allow more light in)",
+                resourceLinks: [
+                    { text: "Software Guide - Page 6", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "It's bright outside. Do you adjust ISO, flash, and shutter speed up or down? List each.",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "ISO: DOWN (decrease for less sensitivity), Flash: DOWN (reduce power to avoid overexposure), Shutter Speed: UP (faster to prevent overexposure)",
+                resourceLinks: [
+                    { text: "Software Guide - Page 4", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "What do you do if the printer is still not printing, even though it seems correctly set up?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "Restart the printer and check drivers", correct: true },
+                    { text: "Replace all the ink", correct: false },
+                    { text: "Buy a new printer", correct: false },
+                    { text: "Print from a different computer", correct: false }
+                ],
+                multiple: false,
+                explanation: "Driver issues are common causes of printing problems. Restart and check driver status before hardware troubleshooting.",
+                resourceLinks: [
+                    { text: "Software Guide - Page 6", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "After printing the first set of pictures, the printer stops working. What should you do?",
+                type: "Multiple Choice",
+                options: [
+                    { text: "Check paper levels and restart printer", correct: true },
+                    { text: "Continue with manual processing", correct: false },
+                    { text: "Switch to black and white mode", correct: false },
+                    { text: "Clean the printer heads", correct: false }
+                ],
+                multiple: false,
+                explanation: "Most common cause after initial prints is paper depletion or minor feed issues. Check basics first.",
+                resourceLinks: [
+                    { text: "Software Guide - Page 7", url: "https://drive.google.com/file/d/1eR0tucd3QVwX2mWEibbedo8LRx5a1uly/view?usp=sharing" }
+                ]
+            },
+            {
+                question: "How do you put the cash inside the envelope?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Record a video with Timestamp from the start so that all the bills can be seen. Seal the envelope. Then, write your name, date, and restaurant on the envelope.",
+                resourceLinks: [
+                    { text: "Internal Training Notes", url: "" }
+                ]
+            },
+            {
+                question: "How do you confirm a sale went through in Square?",
+                type: "Short Answer",
+                shortAnswer: true,
+                sampleAnswer: "Check for the green checkmark, confirmation number, and receipt generation. The transaction should appear in your daily sales summary.",
+                resourceLinks: [
+                    { text: "Internal Training Notes", url: "" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let userInfo = {};
+        let quizStartTime = null;
+        let shuffledQuestions = [];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function initializeQuiz() {
+            shuffledQuestions = questions.map(question => {
+                if (question.options) {
+                    const originalOptions = [...question.options];
+                    const shuffledOptions = shuffleArray(originalOptions);
+                    
+                    const shuffledQuestion = {
+                        ...question,
+                        options: shuffledOptions,
+                        originalToShuffledMap: {}
+                    };
+                    
+                    shuffledOptions.forEach((option, newIndex) => {
+                        const originalIndex = originalOptions.findIndex(orig => orig.text === option.text);
+                        shuffledQuestion.originalToShuffledMap[originalIndex] = newIndex;
+                    });
+                    
+                    return shuffledQuestion;
+                } else if (question.dragItems) {
+                    // Shuffle drag items but keep track of correct order
+                    const shuffledItems = shuffleArray([...question.dragItems]);
+                    return {
+                        ...question,
+                        dragItems: shuffledItems
+                    };
+                }
+                return question;
+            });
+        }
+
+        function startQuiz() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!fullName || !email) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            userInfo = { fullName, email, timestamp: new Date().toISOString() };
+            quizStartTime = new Date();
+            
+            initializeQuiz();
+            
+            document.getElementById('user-info-form').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('question-container');
+            
+            let html = `
+                <div class="quiz-card">
+                    <div class="question-header">
+                        <div class="question-number">${currentQuestion + 1}</div>
+                        <div class="question-text">${question.question}</div>
+                    </div>
+                    <div class="question-type">(${question.type})</div>
+            `;
+
+            if (question.shortAnswer) {
+                html += `<textarea class="short-answer" id="answer-${currentQuestion}" placeholder="Enter your answer here..."></textarea>`;
+            } else if (question.type === "Drag and Drop") {
+                html += `
+                    <div class="drag-container">
+                        <div class="drag-instructions">
+                            📋 Drag the items below to arrange them in the correct order from top to bottom
+                        </div>
+                        <div class="drag-list" id="drag-list-${currentQuestion}">
+                `;
+                question.dragItems.forEach((item, index) => {
+                    html += `
+                        <div class="drag-item" draggable="true" data-index="${index}" data-correct="${item.correct}">
+                            <div class="drag-item-number">${index + 1}</div>
+                            ${item.text}
+                        </div>
+                    `;
+                });
+                html += '</div></div>';
+            } else {
+                html += '<div class="options">';
+                question.options.forEach((option, index) => {
+                    const inputType = question.multiple ? 'checkbox' : 'radio';
+                    html += `
+                        <div class="option" onclick="selectOption(${index})">
+                            <input type="${inputType}" name="question-${currentQuestion}" id="option-${index}" value="${index}">
+                            <label for="option-${index}">${option.text}</label>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+            
+            // Add drag and drop functionality if needed
+            if (question.type === "Drag and Drop") {
+                setupDragAndDrop(currentQuestion);
+            }
+            
+            updateProgress();
+        }
+
+        function setupDragAndDrop(questionIndex) {
+            const dragList = document.getElementById(`drag-list-${questionIndex}`);
+            const dragItems = dragList.querySelectorAll('.drag-item');
+
+            dragItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            this.classList.add('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            if (draggedElement !== this) {
+                const parent = this.parentNode;
+                const draggedIndex = Array.from(parent.children).indexOf(draggedElement);
+                const targetIndex = Array.from(parent.children).indexOf(this);
+                
+                if (draggedIndex < targetIndex) {
+                    parent.insertBefore(draggedElement, this.nextSibling);
+                } else {
+                    parent.insertBefore(draggedElement, this);
+                }
+                
+                // Update numbering
+                updateDragItemNumbers(parent);
+            }
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            // Remove drag-over class from all items
+            document.querySelectorAll('.drag-item').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+        }
+
+        function updateDragItemNumbers(container) {
+            const items = container.querySelectorAll('.drag-item');
+            items.forEach((item, index) => {
+                const numberElement = item.querySelector('.drag-item-number');
+                numberElement.textContent = index + 1;
+            });
+        }
+
+        function selectOption(index) {
+            const question = shuffledQuestions[currentQuestion];
+            const option = document.getElementById(`option-${index}`);
+            const optionDiv = option.closest('.option');
+
+            if (question.multiple) {
+                option.checked = !option.checked;
+                optionDiv.classList.toggle('selected');
+            } else {
+                document.querySelectorAll(`input[name="question-${currentQuestion}"]`).forEach(input => {
+                    input.checked = false;
+                    input.closest('.option').classList.remove('selected');
+                });
+                option.checked = true;
+                optionDiv.classList.add('selected');
+            }
+        }
+
+        function nextQuestion() {
+            const question = shuffledQuestions[currentQuestion];
+            let answer;
+
+            if (question.shortAnswer) {
+                answer = document.getElementById(`answer-${currentQuestion}`).value.trim();
+                if (!answer) {
+                    alert('Please provide an answer before continuing.');
+                    return;
+                }
+            } else if (question.type === "Drag and Drop") {
+                const dragList = document.getElementById(`drag-list-${currentQuestion}`);
+                const dragItems = dragList.querySelectorAll('.drag-item');
+                answer = Array.from(dragItems).map(item => parseInt(item.dataset.correct));
+            } else {
+                const checkedOptions = document.querySelectorAll(`input[name="question-${currentQuestion}"]:checked`);
+                if (checkedOptions.length === 0) {
+                    alert('Please select an answer before continuing.');
+                    return;
+                }
+                answer = Array.from(checkedOptions).map(option => parseInt(option.value));
+            }
+
+            userAnswers[currentQuestion] = answer;
+            showExplanationThenContinue();
+        }
+
+        function showExplanationThenContinue() {
+            const question = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('question-container');
+            const isCorrect = isCorrectAnswer(currentQuestion);
+            
+            let explanationContent;
+            let titleText;
+            let titleIcon;
+            
+            if (question.shortAnswer) {
+                explanationContent = question.sampleAnswer || "Thank you for your response.";
+                titleText = "📝 Sample Answer:";
+                titleIcon = "";
+            } else if (question.type === "Drag and Drop") {
+                if (isCorrect) {
+                    explanationContent = question.explanation || "Correct order! " + question.explanation;
+                    titleText = "✅ Correct Order!";
+                    titleIcon = "style='color: #22c55e; font-weight: bold;'";
+                } else {
+                    explanationContent = question.explanation || "The correct order is important for proper procedure.";
+                    titleText = "❌ Incorrect Order";
+                    titleIcon = "style='color: #ef4444; font-weight: bold;'";
+                }
+            } else {
+                explanationContent = question.explanation || "Thank you for your answer.";
+                if (isCorrect) {
+                    titleText = "✅ Correct!";
+                    titleIcon = "style='color: #22c55e; font-weight: bold;'";
+                } else {
+                    titleText = "❌ Incorrect";
+                    titleIcon = "style='color: #ef4444; font-weight: bold;'";
+                }
+            }
+            
+            let explanationHtml = `
+                <div class="explanation">
+                    <div class="explanation-title" ${titleIcon}>${titleText}</div>
+                    <div class="explanation-content">${explanationContent}</div>
+            `;
+            
+            if ((!isCorrect || question.shortAnswer) && question.resourceLinks && question.resourceLinks.length > 0) {
+                explanationHtml += `
+                    <div class="resource-links" style="margin-top: 15px;">
+                        <h5>📚 Study this resource:</h5>
+                `;
+                question.resourceLinks.forEach(link => {
+                    explanationHtml += `<a href="${link.url}" target="_blank">📄 ${link.text}</a>`;
+                });
+                explanationHtml += '</div>';
+            }
+            
+            explanationHtml += '</div>';
+            container.querySelector('.quiz-card').insertAdjacentHTML('beforeend', explanationHtml);
+            
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? 'Finish Quiz' : 'Continue';
+            nextBtn.onclick = continueToNext;
+        }
+
+        function continueToNext() {
+            if (currentQuestion < shuffledQuestions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.textContent = 'Next';
+                nextBtn.onclick = nextQuestion;
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function isCorrectAnswer(questionIndex) {
+            const question = shuffledQuestions[questionIndex];
+            const userAnswer = userAnswers[questionIndex];
+
+            if (question.shortAnswer) {
+                // Special grading for camera settings questions
+                if (question.question.includes("It's dark")) {
+                    // Look for 2 "up" words and 1 "down" word
+                    const upCount = (userAnswer.toLowerCase().match(/up/g) || []).length;
+                    const downCount = (userAnswer.toLowerCase().match(/down/g) || []).length;
+                    return userAnswer && userAnswer.length > 20 && upCount >= 2 && downCount >= 1;
+                } else if (question.question.includes("It's bright")) {
+                    // Look for 2 "down" words and 1 "up" word
+                    const upCount = (userAnswer.toLowerCase().match(/up/g) || []).length;
+                    const downCount = (userAnswer.toLowerCase().match(/down/g) || []).length;
+                    return userAnswer && userAnswer.length > 20 && downCount >= 2 && upCount >= 1;
+                }
+                // Regular short answer grading
+                return userAnswer && userAnswer.length > 20;
+            }
+
+            if (question.type === "Drag and Drop") {
+                // Check if the order is correct (1, 2, 3, 4, 5, 6...)
+                const correctOrder = question.dragItems
+                    .sort((a, b) => a.correct - b.correct)
+                    .map(item => item.correct);
+                return JSON.stringify(userAnswer) === JSON.stringify(correctOrder);
+            }
+
+            if (!userAnswer || userAnswer.length === 0) {
+                return false;
+            }
+
+            if (question.multiple) {
+                const correctAnswers = question.options
+                    .map((option, index) => option.correct ? index : -1)
+                    .filter(index => index !== -1)
+                    .sort();
+                
+                return JSON.stringify(userAnswer.sort()) === JSON.stringify(correctAnswers);
+            } else {
+                const correctAnswer = question.options.findIndex(option => option.correct);
+                return userAnswer[0] === correctAnswer;
+            }
+        }
+
+        function calculateScore() {
+            let correctAnswers = 0;
+            shuffledQuestions.forEach((question, index) => {
+                if (isCorrectAnswer(index)) {
+                    correctAnswers++;
+                }
+            });
+            return Math.round((correctAnswers / shuffledQuestions.length) * 100);
+        }
+
+        function finishQuiz() {
+            const score = calculateScore();
+            const passed = score >= 80;
+            
+            saveToGoogleSheets(score, passed);
+            
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            const scoreDisplay = document.getElementById('score-display');
+            const resultMessage = document.getElementById('result-message');
+            
+            scoreDisplay.textContent = `${score}%`;
+            scoreDisplay.className = `score-display ${passed ? 'pass' : 'fail'}`;
+            
+            if (passed) {
+                resultMessage.innerHTML = `
+                    <h3 style="color: #22c55e; margin-bottom: 20px;">🎉 Congratulations! You Passed!</h3>
+                    <p>You've successfully completed the Sales Photographer training quiz with ${score}%.</p>
+                `;
+                showDetailedResults();
+            } else {
+                resultMessage.innerHTML = `
+                    <h3 style="color: #ef4444; margin-bottom: 20px;">📚 Study More and Try Again</h3>
+                    <p>You need at least 80% to pass. Please review the training materials and retake the quiz.</p>
+                `;
+                document.getElementById('retake-btn').style.display = 'inline-block';
+            }
+        }
+
+        function showDetailedResults() {
+            const detailedResults = document.createElement('div');
+            detailedResults.className = 'detailed-results';
+            detailedResults.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                padding: 30px;
+                margin-top: 30px;
+                box-shadow: 0 4px 20px rgba(49, 35, 2, 0.1);
+                border: 1px solid rgba(212, 192, 112, 0.2);
+                text-align: left;
+                max-height: 500px;
+                overflow-y: auto;
+            `;
+            
+            let html = '<h3 style="color: #312302; margin-bottom: 20px; text-align: center;">📋 Your Quiz Results</h3>';
+            
+            shuffledQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = isCorrectAnswer(index);
+                const statusIcon = isCorrect ? '✅' : '❌';
+                const statusColor = isCorrect ? '#22c55e' : '#ef4444';
+                
+                html += `
+                    <div style="border-bottom: 1px solid #f0f0f0; padding: 20px 0; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <span style="color: ${statusColor}; font-size: 1.2rem; margin-right: 10px;">${statusIcon}</span>
+                            <strong>Question ${index + 1}: ${question.question}</strong>
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin: 8px 0;">
+                            <strong>Your Answer:</strong> 
+                `;
+                
+                if (question.shortAnswer) {
+                    html += `<div style="font-style: italic; color: #553f0c;">"${userAnswer || 'No answer provided'}"</div>`;
+                } else if (question.type === "Drag and Drop") {
+                    const userOrder = userAnswer.map((correctVal, idx) => `${idx + 1}. Step ${correctVal}`).join('<br>');
+                    html += `<div style="font-style: italic; color: #553f0c;">${userOrder}</div>`;
+                } else {
+                    const selectedTexts = userAnswer.map(optionIndex => question.options[optionIndex].text);
+                    html += `<div style="font-style: italic; color: #553f0c;">${selectedTexts.join('; ')}</div>`;
+                }
+                
+                html += '</div>';
+                
+                // Show correct answer
+                if (question.shortAnswer) {
+                    html += `
+                        <div style="background: #e8f5e8; padding: 12px; border-radius: 6px; margin: 8px 0;">
+                            <strong>Sample Answer:</strong> 
+                            <div style="color: #166534;">${question.sampleAnswer}</div>
+                        </div>
+                    `;
+                } else if (question.type === "Drag and Drop") {
+                    const correctOrder = question.dragItems
+                        .sort((a, b) => a.correct - b.correct)
+                        .map((item, idx) => `${idx + 1}. ${item.text}`)
+                        .join('<br>');
+                    html += `
+                        <div style="background: #e8f5e8; padding: 12px; border-radius: 6px; margin: 8px 0;">
+                            <strong>Correct Order:</strong> 
+                            <div style="color: #166534;">${correctOrder}</div>
+                        </div>
+                    `;
+                } else {
+                    const correctOptions = question.options.filter(option => option.correct).map(option => option.text);
+                    html += `
+                        <div style="background: #e8f5e8; padding: 12px; border-radius: 6px; margin: 8px 0;">
+                            <strong>Correct Answer${correctOptions.length > 1 ? 's' : ''}:</strong> 
+                            <div style="color: #166534;">${correctOptions.join('; ')}</div>
+                        </div>
+                    `;
+                }
+                
+                if (question.explanation) {
+                    html += `
+                        <div style="background: #fef9e7; padding: 12px; border-radius: 6px; margin: 8px 0; border-left: 4px solid #D4c070;">
+                            <strong>Explanation:</strong> 
+                            <div style="color: #553f0c;">${question.explanation}</div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+            });
+            
+            detailedResults.innerHTML = html;
+            document.getElementById('results-container').appendChild(detailedResults);
+        }
+
+        function retakeQuiz() {
+            currentQuestion = 0;
+            userAnswers = [];
+            quizStartTime = new Date();
+            
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            
+            initializeQuiz();
+            showQuestion();
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} of ${shuffledQuestions.length}`;
+        }
+
+        async function saveToGoogleSheets(score, passed) {
+            const completionTime = new Date();
+            const timeSpent = Math.round((completionTime - quizStartTime) / 1000 / 60);
+            
+            const answers = userAnswers.map((answer, index) => {
+                const question = shuffledQuestions[index];
+                if (question.shortAnswer) {
+                    return answer || 'No answer provided';
+                } else if (question.type === "Drag and Drop") {
+                    return `Order: ${answer.join(', ')}`;
+                } else {
+                    const selectedOptions = answer.map(optionIndex => 
+                        question.options[optionIndex].text
+                    );
+                    return selectedOptions.join('; ');
+                }
+            });
+            
+            const data = {
+                timestamp: new Date().toLocaleString(),
+                fullName: userInfo.fullName,
+                email: userInfo.email,
+                score: score,
+                passed: passed ? 'Yes' : 'No',
+                timeSpent: `${timeSpent} minutes`,
+                completionTime: completionTime.toLocaleString(),
+                answers: answers
+            };
+            
+            // Replace with your actual Google Apps Script URL
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log('Data sent to Google Sheets successfully');
+            } catch (error) {
+                console.error('Error sending data to Google Sheets:', error);
+                // Store locally as backup
+                const backupData = JSON.stringify(data);
+                console.log('Backup data (copy this if needed):', backupData);
+            }
+        }
+    </script>
+</body>
+</html>
